@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumlicious - Katalog Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --sum-orange: #F47C3C;
+            --sum-dark: #E56B2F;
+            --sum-cream: #F6D6A8;
+            --sum-yellow: #F8C44F;
+            --sum-white: #FFFFFF;
+            --sum-text: #7a4a28;
+            --card-shadow: 0 12px 30px rgba(244,124,60,0.16);
+            --soft-shadow: 0 8px 24px rgba(229,107,47,0.14);
+        }
+
+        html,body{height:100%;}
+        body{
+            font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+            background: linear-gradient(180deg,var(--sum-cream), var(--sum-white) 38%);
+            color: var(--sum-dark);
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+        }
+
+        button{
+            border-radius: 16px;
+            transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+        }
+        button:hover{transform: translateY(-1px);}
+
+        /* Header styling */
+        header{
+            background: linear-gradient(135deg,var(--sum-orange), var(--sum-dark));
+            color: var(--sum-white);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            box-shadow: var(--card-shadow);
+        }
+
+        header h1{
+            font-weight: 800;
+            font-size: 2.75rem;
+            letter-spacing: 1px;
+            margin:0;
+        }
+
+        header p{opacity:0.9; color: rgba(255,255,255,0.92);}
+
+        /* Decorative steam / pattern */
+        header::before{
+            content: '';
+            position: absolute;
+            right: -40px;
+            top: -20px;
+            width: 220px;
+            height: 220px;
+            background-image: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.2) 0 6px, transparent 7px), radial-gradient(circle at 65% 65%, rgba(255,255,255,0.12) 0 5px, transparent 6px);
+            transform: rotate(18deg);
+            opacity: 0.75;
+            pointer-events: none;
+        }
+
+        /* Glass bar */
+        .glassmorphism{
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(244,124,60,0.16);
+        }
+
+        /* Hide scrollbars on small category strip */
+        .no-scrollbar::-webkit-scrollbar{display:none}
+        .no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+
+        /* Category buttons (pills) */
+        .cat-btn{
+            background: rgba(255,255,255,0.94);
+            color: var(--sum-dark);
+            border-radius: 999px;
+            padding: 0.65rem 1rem;
+            box-shadow: var(--soft-shadow);
+            border: 1px solid rgba(244,124,60,0.16);
+            font-weight: 700;
+            min-width: 110px;
+        }
+        .cat-btn:hover{background: rgba(244,124,60,0.14);}
+        .cat-btn.bg-amber-800,
+        .cat-btn.active{
+            background: linear-gradient(180deg,var(--sum-orange), var(--sum-dark));
+            color: var(--sum-white) !important;
+            box-shadow: 0 14px 28px rgba(229,107,47,0.18) !important;
+            border-color: transparent;
+        }
+        .cat-btn.active:hover{transform:none;}
+
+        /* Katalog cards */
+        #katalog-container > div{
+            background: #fff8f0;
+            border-radius: 18px !important;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: var(--card-shadow) !important;
+            border: 1px solid rgba(244,124,60,0.14) !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        #katalog-container img{
+            border-radius: 14px;
+            object-fit: cover;
+            background: linear-gradient(180deg,#fff,#fff1e8);
+            box-shadow: 0 8px 24px rgba(244,124,60,0.08);
+        }
+
+        #katalog-container h3{
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--sum-dark);
+            margin-bottom: 3px;
+        }
+
+        #katalog-container p{color: #7a593f;}
+
+        #katalog-container .text-amber-800{
+            color: var(--sum-dark) !important;
+            font-weight:800;
+        }
+
+        /* Button brand overrides for existing utility classes */
+        .bg-amber-800{background: var(--sum-orange) !important;}
+        .bg-amber-900{background: var(--sum-dark) !important;}
+        .bg-emerald-600,
+        .bg-emerald-700{background: var(--sum-orange) !important;}
+        .text-amber-800,
+        .text-amber-700,
+        .text-amber-950,
+        .text-amber-200{color: var(--sum-orange) !important;}
+        .bg-amber-200{background: rgba(248,196,79,0.20) !important;}
+        .border-stone-200,
+        .border-stone-100,
+        .border-stone-300{border-color: rgba(244,124,60,0.16) !important;}
+        .text-stone-800,
+        .text-stone-900,
+        .text-stone-600,
+        .text-stone-500,
+        .text-stone-400{color: var(--sum-text) !important;}
+        .bg-stone-50{background: rgba(255,249,242,0.95) !important;}
+        .bg-stone-100{background: rgba(255,247,240,0.96) !important;}
+
+        /* Input card and section spacing */
+        main > div:first-of-type{
+            background: rgba(255,249,242,0.98);
+            border-color: rgba(229,107,47,0.14) !important;
+            box-shadow: var(--soft-shadow);
+        }
+        #nomor-meja{
+            background: rgba(255,255,255,0.96);
+            border-color: rgba(229,107,47,0.16) !important;
+            color: var(--sum-dark);
+        }
+        #nomor-meja::placeholder{color: rgba(92,59,35,0.45);}
+
+        /* Quantity control */
+        #katalog-container .bg-stone-50{background:transparent}
+        #katalog-container .rounded-full{border-radius:999px}
+        #katalog-container button[disabled]{opacity:0.35}
+        #katalog-container button{border:none;}
+
+        /* Floating bar */
+        #floating-bar{border-radius:20px;margin:0 12px 12px 12px}
+        #floating-bar button{
+            background: linear-gradient(90deg,var(--sum-orange),var(--sum-dark));
+            border-radius: 18px;
+            padding: 14px 22px;
+            box-shadow: 0 16px 36px rgba(244,124,60,0.2);
+            display:flex;align-items:center;gap:10px;font-weight:800;border:none;
+        }
+        #floating-bar p{margin:0;}
+        #floating-bar .text-xs{color: rgba(92,59,35,0.78) !important;}
+
+        .sticker{
+            display:inline-block;padding:6px 12px;background: rgba(248,196,79,0.15);border-radius:14px;border:1px solid rgba(244,124,60,0.14);font-weight:700;color:var(--sum-dark);font-size:12px;
+        }
+
+        @media (min-width:640px){
+            header h1{font-size:3.25rem}
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-36 font-sans">
+
+    <header class="text-white py-10 px-4 shadow-lg text-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.2)_0,_transparent_40%)]"></div>
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-2">SUMLICIOUS</h1>
+            <p class="text-sm sm:text-base uppercase tracking-[0.22em] opacity-90 mb-4">Small Bites, Big Happiness</p>
+            <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 text-xs sm:text-sm uppercase tracking-[0.24em] font-semibold">
+                <span class="w-2 h-2 rounded-full bg-yellow-300"></span>
+                Enjoy Your Favorite Dimsum Anytime!
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 mt-8 sm:mt-10">
+        
+        <div class="bg-white/95 p-5 sm:p-6 rounded-[28px] shadow-sm mb-6 border border-orange-200">
+            <label for="nomor-meja" class="block text-sm font-semibold text-orange-900 uppercase tracking-widest mb-3">
+                <i class="fa-solid fa-chair text-orange-500 mr-2"></i> Nomor Meja Anda
+            </label>
+            <input type="number" id="nomor-meja" placeholder="Contoh: 07" 
+                   class="w-full bg-[#FFF4E8] border border-orange-200 rounded-2xl px-4 py-3 text-lg font-semibold text-orange-900 focus:outline-none focus:ring-2 focus:ring-orange-300 transition-all">
+            <p class="text-xs text-orange-700/80 mt-2">*Wajib diisi sebelum mengirimkan pesanan ke WhatsApp.</p>
+        </div>
+
+        <div class="flex gap-2 overflow-x-auto pb-3 mb-4 no-scrollbar">
+            <button onclick="filterMenu('semua')" id="btn-cat-semua" class="cat-btn px-4 py-2 rounded-full text-sm font-medium bg-[#F47C3C] text-white shadow-sm transition-all whitespace-nowrap">Semua Menu</button>
+            <button onclick="filterMenu('Dimsum')" id="btn-cat-Dimsum" class="cat-btn px-4 py-2 rounded-full text-sm font-medium bg-[#fff4ec] text-[#7a4a28] border border-orange-200 hover:bg-[#ffe7d4] transition-all whitespace-nowrap">Dimsum</button>
+            <button onclick="filterMenu('Dimsum Kuah')" id="btn-cat-Dimsum Kuah" class="cat-btn px-4 py-2 rounded-full text-sm font-medium bg-[#fff4ec] text-[#7a4a28] border border-orange-200 hover:bg-[#ffe7d4] transition-all whitespace-nowrap">Dimsum Kuah</button>
+            <button onclick="filterMenu('Add On')" id="btn-cat-Add On" class="cat-btn px-4 py-2 rounded-full text-sm font-medium bg-[#fff4ec] text-[#7a4a28] border border-orange-200 hover:bg-[#ffe7d4] transition-all whitespace-nowrap">Add On</button>
+        </div>
+
+        <div id="loading" class="text-center py-12">
+            <div class="animate-spin text-[#E56B2F] text-3xl mb-2"><i class="fa-solid fa-circle-notch"></i></div>
+            <p class="text-[#7a4a28]/80 text-sm">Menhubungkan data ke Google Sheets...</p>
+        </div>
+
+        <div id="katalog-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
+            </div>
+    </main>
+
+    <div id="floating-bar" class="fixed bottom-0 left-0 right-0 p-4 glassmorphism border-t border-orange-200 shadow-[0_-4px_20px_rgba(0,0,0,0.15)] z-50">
+        <div class="max-w-4xl mx-auto flex items-center justify-between gap-4">
+            <div>
+                <p class="text-xs text-[#7a4a28]/80 font-medium uppercase tracking-wider">Total Pembayaran</p>
+                <p id="total-harga-display" class="text-xl font-black text-[#E56B2F]">Rp 0</p>
+                <p id="total-item-display" class="text-xs text-[#E56B2F] font-semibold">0 menu dipilih</p>
+            </div>
+            <button onclick="kirimKeWhatsApp()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-3.5 rounded-xl shadow-md transition-all flex items-center gap-2 text-sm sm:text-base active:scale-95">
+                <i class="fa-brands fa-whatsapp text-xl"></i>
+                Kirim Pesanan
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const WHATSAPP_NUMBER = "6285921235742";
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/1BsWg4-SVI-HoQmM20rJKD41Y9AUZtmAUa-BxTM6zvNw/export?format=csv";
+
+        // Backup menu lokal jika Google Sheets gagal merespon / terhambat CORS browser lokal
+        const menuCadangan = [
+  { id:"1", nama:"Bangkok Sumlicious", harga:16000, kategori:"Dimsum", deskripsi:"4 pcs dimsum dengan saus bangkok", gambar:"https://placehold.co/400" },
+  { id:"2", nama:"Spicy Sumlicious", harga:16500, kategori:"Dimsum", deskripsi:"4 pcs dimsum dengan chili oil", gambar:"https://placehold.co/400" },
+  { id:"3", nama:"Mentai Sumlicious", harga:20000, kategori:"Dimsum", deskripsi:"4 pcs dimsum dengan saus mentai", gambar:"https://placehold.co/400" },
+  { id:"4", nama:"Cheesy Creamy Sumlicious", harga:18000, kategori:"Dimsum Kuah", deskripsi:"4 pcs dimsum creamy gurih", gambar:"https://placehold.co/400" },
+  { id:"5", nama:"Spicy Creamy Sumlicious", harga:19000, kategori:"Dimsum Kuah", deskripsi:"4 pcs dimsum kuah pedas gurih", gambar:"https://placehold.co/400" },
+  { id:"6", nama:"Dimsum", harga:3000, kategori:"Add On", deskripsi:"Tambahan dimsum", gambar:"https://placehold.co/400" },
+  { id:"7", nama:"Chili Oil", harga:1000, kategori:"Add On", deskripsi:"Tambahan chili oil", gambar:"https://placehold.co/400" },
+  { id:"8", nama:"Saus Bangkok", harga:500, kategori:"Add On", deskripsi:"Tambahan saus bangkok", gambar:"https://placehold.co/400" }
+];
+
+        let semuaMenu = [];
+        let keranjang = {}; 
+        let kategoriAktif = 'semua';
+
+        function formatRupiah(angka) {
+            return 'Rp ' + parseInt(angka || 0).toLocaleString('id-ID');
+        }
+
+        // Fungsi fetch data dengan proteksi batas waktu (Timeout) maksimal 2 detik
+        async function fetchWithTimeout(resource, options = {}) {
+            const { timeout = 2000 } = options;
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), timeout);
+            const response = await fetch(resource, { ...options, signal: controller.signal });
+            clearTimeout(id);
+            return response;
+        }
+
+        // Memuat Data Menu
+        async function loadMenuData() {
+            try {
+                const response = await fetchWithTimeout(CSV_URL, { timeout: 2000 });
+                if (!response.ok) throw new Error("Gagal memuat respon jaringan");
+                
+                const csvText = await response.text();
+                const parsedData = parseCSVRobust(csvText);
+                
+                if (parsedData && parsedData.length > 0) {
+                    semuaMenu = parsedData;
+                } else {
+                    throw new Error("Data parsing kosong");
+                }
+            } catch (error) {
+                console.warn("Mengaktifkan data cadangan lokal secara instan (Proteksi CORS/Offline).");
+                semuaMenu = menuCadangan;
+            } finally {
+                semuaMenu.forEach(menu => {
+                    keranjang[menu.id] = 0;
+                });
+                
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('katalog-container').classList.remove('hidden');
+                renderKatalog();
+                updateFloatingBar(); // Inisialisasi awal tampilan Rp 0 di bar bawah
+            }
+        }
+
+        // Parser CSV Robust
+        function parseCSVRobust(text) {
+            let lines = [];
+            let row = [""];
+            let inQuotes = false;
+
+            for (let i = 0; i < text.length; i++) {
+                let c = text[i];
+                let next = text[i+1];
+                if (c === '"') {
+                    if (inQuotes && next === '"') { row[row.length - 1] += '"'; i++; }
+                    else { inQuotes = !inQuotes; }
+                } else if (c === ',' && !inQuotes) {
+                    row.push('');
+                } else if ((c === '\r' || c === '\n') && !inQuotes) {
+                    if (c === '\r' && next === '\n') { i++; }
+                    lines.push(row);
+                    row = [''];
+                } else {
+                    row[row.length - 1] += c;
+                }
+            }
+            if (row.length > 1 || row[0] !== '') lines.push(row);
+            if (lines.length <= 1) return [];
+
+            const headers = lines[0].map(h => h.trim().toLowerCase());
+            
+            const idxNama = headers.findIndex(h => h.includes('nama') || h.includes('menu') || h.includes('title'));
+            const idxHarga = headers.findIndex(h => h.includes('harga') || h.includes('price'));
+            const idxKategori = headers.findIndex(h => h.includes('kategori') || h.includes('category'));
+            const idxDeskripsi = headers.findIndex(h => h.includes('deskripsi') || h.includes('desc'));
+            const idxGambar = headers.findIndex(h => h.includes('gambar') || h.includes('image') || h.includes('foto'));
+
+            return lines.slice(1).map((line, index) => {
+                if (line.length === 0 || (line.length === 1 && line[0] === '')) return null;
+
+                let nama = idxNama !== -1 ? line[idxNama] : line[0];
+                let hargaRaw = idxHarga !== -1 ? line[idxHarga] : line[1];
+                let kategori = idxKategori !== -1 ? line[idxKategori] : line[2];
+                let deskripsi = idxDeskripsi !== -1 ? line[idxDeskripsi] : "";
+                let gambar = idxGambar !== -1 ? line[idxGambar] : "";
+
+                let harga = parseInt(String(hargaRaw).replace(/[^0-9]/g, '')) || 0;
+
+                return {
+                    id: "sheet-id-" + index,
+                    nama: nama ? nama.trim() : "Menu #" + (index + 1),
+                    harga: harga,
+                    kategori: kategori ? kategori.trim() : "Lainnya",
+                    deskripsi: deskripsi ? deskripsi.trim() : "Menu sajian spesial Brewijaya.",
+                    gambar: gambar && gambar.startsWith('http') ? gambar.trim() : "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80"
+                };
+            }).filter(item => item !== null && item.nama !== "");
+        }
+
+        // Render Antarmuka Katalog (Tombol Kuantitas Aman & Responsif di Bawah)
+        function renderKatalog() {
+            const container = document.getElementById('katalog-container');
+            container.innerHTML = '';
+
+            const menuDifilter = kategoriAktif === 'semua' 
+                ? semuaMenu 
+                : semuaMenu.filter(m => m.kategori.toLowerCase() === kategoriAktif.toLowerCase());
+
+            if(menuDifilter.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-12 text-[#7a4a28]/70 text-sm">Tidak ada menu pada kategori ini.</div>`;
+                return;
+            }
+
+            menuDifilter.forEach(menu => {
+                const jumlah = keranjang[menu.id] || 0;
+                
+                const card = document.createElement('div');
+                card.className = "bg-[#fff4ec] rounded-[28px] overflow-hidden shadow-sm border border-orange-200 flex flex-col justify-between transition-all hover:shadow-md";
+                card.innerHTML = `
+                    <div class="flex flex-row items-start p-3 gap-3">
+                        <img src="${menu.gambar}" alt="${menu.nama}" class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl bg-[#fff4ec] flex-shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <span class="inline-block bg-[#fff4ec] text-[#7a4a28] text-[10px] font-bold px-2 py-0.5 rounded-md uppercase mb-1">${menu.kategori}</span>
+                            <h3 class="font-bold text-[#7a4a28] text-base sm:text-lg truncate mb-0.5">${menu.nama}</h3>
+                            <p class="text-xs text-[#8b5c3c] line-clamp-2 mb-1.5">${menu.deskripsi}</p>
+                            <p class="text-[#E56B2F] font-extrabold text-base">${formatRupiah(menu.harga)}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-[#fff4ec] px-4 py-3 border-t border-orange-200 flex flex-row items-center justify-between gap-2">
+                        <span class="text-xs font-semibold text-[#7a4a28]/80 uppercase tracking-wider">Jumlah Beli</span>
+                        <div class="flex items-center gap-3 bg-[#fff4ec] px-2 py-1 rounded-full border border-orange-200 shadow-sm">
+                            <button id="btn-min-${menu.id}" onclick="ubahJumlah('${menu.id}', -1)" 
+                                    class="w-8 h-8 rounded-full bg-[#fff4ec] text-[#7a4a28] flex items-center justify-center font-bold hover:bg-[#ffe7d4] active:scale-90 transition-all ${jumlah === 0 ? 'opacity-30 cursor-not-allowed' : ''}" 
+                                    ${jumlah === 0 ? 'disabled' : ''}>
+                                <i class="fa-solid fa-minus text-xs"></i>
+                            </button>
+                            <span id="qty-${menu.id}" class="w-6 text-center font-black text-base text-[#7a4a28]">${jumlah}</span>
+                            <button onclick="ubahJumlah('${menu.id}', 1)" 
+                                    class="w-8 h-8 rounded-full bg-[#F47C3C] text-white flex items-center justify-center font-bold hover:bg-[#E56B2F] active:scale-90 transition-all">
+                                <i class="fa-solid fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Fungsi Tambah/Kurang Kuantitas Menu
+        function ubahJumlah(id, perubahan) {
+            let currentQty = keranjang[id] || 0;
+            let newQty = currentQty + perubahan;
+            
+            if (newQty < 0) newQty = 0;
+            keranjang[id] = newQty;
+            
+            const qtyElement = document.getElementById(`qty-${id}`);
+            if (qtyElement) qtyElement.innerText = newQty;
+
+            const btnMin = document.getElementById(`btn-min-${id}`);
+            if (btnMin) {
+                if (newQty === 0) {
+                    btnMin.classList.add('opacity-40', 'cursor-not-allowed');
+                    btnMin.setAttribute('disabled', 'true');
+                } else {
+                    btnMin.classList.remove('opacity-40', 'cursor-not-allowed');
+                    btnMin.removeAttribute('disabled');
+                }
+            }
+
+            updateFloatingBar();
+        }
+
+        // Memperbarui Nilai di Bar Melayang Permanen
+        function updateFloatingBar() {
+            let totalHarga = 0;
+            let totalItem = 0;
+
+            semuaMenu.forEach(menu => {
+                const qty = keranjang[menu.id] || 0;
+                if(qty > 0) {
+                    totalHarga += (menu.harga * qty);
+                    totalItem += qty;
+                }
+            });
+
+            document.getElementById('total-harga-display').innerText = formatRupiah(totalHarga);
+            document.getElementById('total-item-display').innerText = `${totalItem} menu ditambahkan`;
+        }
+
+        function filterMenu(kategori) {
+            kategoriAktif = kategori;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.className = "cat-btn px-4 py-2 rounded-full text-sm font-medium bg-[#fff4ec] text-[#7a4a28] border border-orange-200 hover:bg-[#ffe7d4] transition-all whitespace-nowrap";
+            });
+            
+            const btnAktif = document.getElementById(`btn-cat-${kategori}`);
+            if(btnAktif) {
+                btnAktif.className = "cat-btn px-4 py-2 rounded-full text-sm font-medium active text-white shadow-sm transition-all whitespace-nowrap";
+            }
+            renderKatalog();
+        }
+
+        // Proses Kirim Ke WhatsApp Terformat Resmi
+        function kirimKeWhatsApp() {
+            let totalItem = 0;
+            semuaMenu.forEach(menu => { totalItem += (keranjang[menu.id] || 0); });
+
+            if (totalItem === 0) {
+                alert("Keranjang belanja Anda kosong! Silakan pilih menu terlebih dahulu sebelum mengirim pesanan.");
+                return;
+            }
+
+            const noMeja = document.getElementById('nomor-meja').value.trim();
+            if (!noMeja) {
+                alert("Silakan isi NOMOR MEJA Anda terlebih dahulu di kolom bagian atas!");
+                document.getElementById('nomor-meja').focus();
+                document.getElementById('nomor-meja').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            let teksPesanan = `*Halo Sumlicious, Saya ingin memesan.*\n\n`;
+            teksPesanan += `| 🪑 *Nomor Meja:* ${noMeja}\n`;
+            teksPesanan += `-------------------------------------------\n\n`;
+            teksPesanan += `*RINCIAN PESANAN:*\n`;
+
+            let totalHarga = 0;
+            let nomorUrut = 1;
+
+            semuaMenu.forEach(menu => {
+                const qty = keranjang[menu.id] || 0;
+                if (qty > 0) {
+                    const subTotal = menu.harga * qty;
+                    totalHarga += subTotal;
+                    
+                    teksPesanan += `${nomorUrut}. *${menu.nama}*\n`;
+                    teksPesanan += `    Jumlah: ${qty}x  (@ ${formatRupiah(menu.harga)})\n`;
+                    teksPesanan += `    Subtotal: ${formatRupiah(subTotal)}\n\n`;
+                    nomorUrut++;
+                }
+            });
+
+            teksPesanan += `-------------------------------------------\n`;
+            teksPesanan += `💰 *TOTAL HARGA YANG HARUS DIBAYAR:* _${formatRupiah(totalHarga)}_\n\n`;
+            teksPesanan += `Mohon segera diproses, terima kasih! 🙏`;
+
+            const urlEncodedText = encodeURIComponent(teksPesanan);
+            const waLink = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${urlEncodedText}`;
+            
+            window.open(waLink, '_blank');
+        }
+
+        window.onload = loadMenuData;
+    </script>
+</body>
+</html>
